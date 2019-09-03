@@ -20,7 +20,7 @@ def get_random_template():
 def get_needed_types(template):
     needed_types = []
     for i in template[1::2]:
-        needed_types.append("Name a(n) " + i + ":")
+        needed_types.append("(?) " + i + ": ")
     return needed_types
 
 
@@ -35,33 +35,30 @@ def process_response(response):
 # gets user input for the madlib
 def get_responses(needed_words):
     responses = []
+    print("    Now fill in the blanks! ")
     for prompt in needed_words:
         input_word = input(prompt)
-        print(process_response(input_word))
         while not process_response(input_word): # repeat for edge cases
             input_word = input(prompt)
-            print(process_response(input_word))
         responses.append(input_word)
     return responses
 
 
 def menu():
-    print(" ~ * ~ * ~ .: Mad Libs Menu :. ~ * ~ * ~ ")
-    print("    Z: Select madlib (1 - 3)")
-    print("    R: Begin random madlib")
-    print("    H: Displays this menu again")
-    print("    X: Exit program")
+    print(" ~ * ~ * ~ .: MadLibs Menu :. ~ * ~ * ~ ")
+    print("      Z: Select madlib (1 - 3)")
+    print("      R: Begin random madlib")
+    print("      H: Displays this menu again")
+    print("      X: Exit program")
 
 def options(mMadLib, selection):
     selection.lower()
     if selection == "r": #
-        print()
         responses = get_responses(mMadLib.needed_types)
         mMadLib.complete_mad_lib(responses)
     elif selection == "z": #
-        template_num = input("   Choose a template (1 - 3): ")
+        template_num = input("(?) Choose a template (1 - 3): ")
         mMadLib.select_template(template_num) # TODO edgecase
-        print()
         responses = get_responses(mMadLib.needed_types)
         mMadLib.complete_mad_lib(responses)
     elif selection == "h": # prints the help menu
@@ -69,11 +66,7 @@ def options(mMadLib, selection):
     elif selection == "x": # ends the program
         exit()
     else:
-        print("Sorry, I'm not sure what that means. Try again.")
-
-
-def display_madlib:
-    #print madlib
+        print("(!) Sorry, I'm not sure what that means. Try again.")
 
 
 class MadLib:
@@ -94,10 +87,16 @@ class MadLib:
             self.template[i] = user_words[0]
             user_words.pop(0)
         self.final_mad_lib = "".join(self.template)
+        self.print_mad_lib()
+        menu()
+
+    def print_mad_lib(self):
+        print("\n ~ * ~ * ~ .: Your MadLib :. ~ * ~ * ~ ")
+        print(self.final_mad_lib)
+        print("   ~ * ~ * ~ .: The End :. ~ * ~ * ~ \n")
 
 menu()
 while True: # loop ends when the user types in X
     mMadLib = MadLib()
     selection = input("--> ")
     options(mMadLib, selection)
-    display_madlib(mMadLib)
