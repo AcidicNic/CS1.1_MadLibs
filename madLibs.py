@@ -58,7 +58,9 @@ def options(mMadLib, selection):
         mMadLib.complete_mad_lib(responses)
     elif selection == "z": #
         template_num = input("(?) Choose a template (1 - 3): ")
-        mMadLib.select_template(template_num) # TODO edgecase
+        while not mMadLib.select_template(template_num): # edge cases
+            template_num = input("(?) Choose a template (1 - 3): ")
+
         responses = get_responses(mMadLib.needed_types)
         mMadLib.complete_mad_lib(responses)
     elif selection == "h": # prints the help menu
