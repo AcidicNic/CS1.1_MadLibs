@@ -24,12 +24,12 @@ def get_needed_types(template):
     return needed_types
 
 
-# removes extra spaces
+# removes extra spaces and that length is at least 2 char
 def process_response(response):
-    responses.strip() # remove spaces and the beggining and end.
-    if len(responses[i]) < 2:
-        return True
-    return False
+    response.strip() # remove spaces and the beggining and end.
+    if len(response) < 2:
+        return False
+    return True
 
 
 # gets user input for the madlib
@@ -37,9 +37,11 @@ def get_responses(needed_words):
     responses = []
     for prompt in needed_words:
         input_word = input(prompt)
+        print(process_response(input_word))
         while not process_response(input_word): # repeat for edge cases
             input_word = input(prompt)
-        responses.append()
+            print(process_response(input_word))
+        responses.append(input_word)
     return responses
 
 
@@ -50,16 +52,18 @@ def menu():
     print("    H: Displays this menu again")
     print("    X: Exit program")
 
-def options(selection):
+def options(mMadLib, selection):
     selection.lower()
     if selection == "r": #
         print()
-        mMadLib.main()
+        responses = get_responses(mMadLib.needed_types)
+        mMadLib.complete_mad_lib(responses)
     elif selection == "z": #
         template_num = input("   Choose a template (1 - 3): ")
-        mMadLib.select_template(int(template_num)): # TODO edgecase
+        mMadLib.select_template(template_num) # TODO edgecase
         print()
-        mMadLib.main()
+        responses = get_responses(mMadLib.needed_types)
+        mMadLib.complete_mad_lib(responses)
     elif selection == "h": # prints the help menu
         menu()
     elif selection == "x": # ends the program
@@ -68,6 +72,9 @@ def options(selection):
         print("Sorry, I'm not sure what that means. Try again.")
 
 
+def display_madlib:
+    #print madlib
+
 
 class MadLib:
     def __init__(self):
@@ -75,7 +82,7 @@ class MadLib:
         self.needed_types = get_needed_types(self.template)
         self.final_mad_lib = ""
 
-    def select_template(num):
+    def select_template(self, num):
         if int(num) < len(TEMPLATE_LIST):
             self.template = TEMPLATE_LIST[int(num)-1]
             return True
@@ -87,16 +94,10 @@ class MadLib:
             self.template[i] = user_words[0]
             user_words.pop(0)
         self.final_mad_lib = "".join(self.template)
-        return self.final_mad_lib
-
-    def main():
-        # TODO put everything together here
-
-
 
 menu()
 while True: # loop ends when the user types in X
     mMadLib = MadLib()
-    mMadLib.needed_types
     selection = input("--> ")
-    options(selection)
+    options(mMadLib, selection)
+    display_madlib(mMadLib)
