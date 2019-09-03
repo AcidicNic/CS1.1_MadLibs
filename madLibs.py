@@ -1,12 +1,13 @@
 import random
+from sys import exit
 TEMPLATE_LIST = [
     # I found these two on reddit
-    ["10 WAYS TO ", "~verb", " YOUR ", "~noun", ". ", "~plural noun", " HATE HIM, FIND OUT WHY!"],
-    ["This one time, I was at ", "~place", " when I found a whole pile of ", "~plural noun",
-     ", turns out it was pretty toxic. Hope I don't lose my ", "~body part", " to the radiation."],
+    ["10 WAYS TO ", "verb", " YOUR ", "noun", ". ", "plural noun", " HATE HIM, FIND OUT WHY!"],
+    ["This one time, I was at ", "place", " when I found a whole pile of ", "plural noun",
+     ", turns out it was pretty toxic. Hope I don't lose my ", "body part", " to the radiation."],
     # Quote from It's Always Sunny
-    ["Whoops! I dropped my ", "~adjective", " ", "~object", " that I use for my ", "~adjective", " ",
-     "~body part", "."]
+    ["Whoops! I dropped my ", "adjective", " ", "object", " that I use for my ", "adjective", " ",
+     "body part", "."]
 ]
 
 
@@ -19,18 +20,53 @@ def get_random_template():
 def get_needed_types(template):
     needed_types = []
     for i in template[1::2]:
-        needed_types.append("Name a(n) " + i[1:] + ":")
+        needed_types.append("Name a(n) " + i + ":")
     return needed_types
 
 
 # removes extra spaces
-def process_responses(responses):
-    for i in range(len(responses)):
-        while responses[i].endswith(" "):    # removes space at the end, if there is one
-            responses[i] = responses[i][:-1]
-        while responses[i].startswith(" "):    # removes space at the start, if there is one
-            responses[i] = responses[i][1:]
+def process_response(response):
+    responses.strip() # remove spaces and the beggining and end.
+    if len(responses[i]) < 2:
+        return True
+    return False
+
+
+# gets user input for the madlib
+def get_responses(needed_words):
+    responses = []
+    for prompt in needed_words:
+        input_word = input(prompt)
+        while not process_response(input_word): # repeat for edge cases
+            input_word = input(prompt)
+        responses.append()
     return responses
+
+
+def menu():
+    print(" ~ * ~ * ~ .: Mad Libs Menu :. ~ * ~ * ~ ")
+    print("    Z: Select madlib (1 - 3)")
+    print("    R: Begin random madlib")
+    print("    H: Displays this menu again")
+    print("    X: Exit program")
+
+def options(selection):
+    selection.lower()
+    if selection == "r": #
+        print()
+        mMadLib.main()
+    elif selection == "z": #
+        template_num = input("   Choose a template (1 - 3): ")
+        mMadLib.select_template(int(template_num)): # TODO edgecase
+        print()
+        mMadLib.main()
+    elif selection == "h": # prints the help menu
+        menu()
+    elif selection == "x": # ends the program
+        exit()
+    else:
+        print("Sorry, I'm not sure what that means. Try again.")
+
 
 
 class MadLib:
@@ -39,6 +75,13 @@ class MadLib:
         self.needed_types = get_needed_types(self.template)
         self.final_mad_lib = ""
 
+    def select_template(num):
+        if int(num) < len(TEMPLATE_LIST):
+            self.template = TEMPLATE_LIST[int(num)-1]
+            return True
+        else:
+            return False
+
     def complete_mad_lib(self, user_words):
         for i in range(1, len(self.template), 2):
             self.template[i] = user_words[0]
@@ -46,12 +89,14 @@ class MadLib:
         self.final_mad_lib = "".join(self.template)
         return self.final_mad_lib
 
-playing = True
-while playing:
-    #main loop
+    def main():
+        # TODO put everything together here
 
-# pickForMe = input("'r' for random words. 'e' to pick your own./n--> ")
-# if pickForMe == 'r':
-#     random_mad_lib()
-# elif pickForMe == 'e':
-#     choose_your_own()
+
+
+menu()
+while True: # loop ends when the user types in X
+    mMadLib = MadLib()
+    mMadLib.needed_types
+    selection = input("--> ")
+    options(selection)
